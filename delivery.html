@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-grocer - Delivery Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .btn {
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    body {
+      animation: fadeIn 0.5s ease-in;
+    }
+    .form-section {
+      background: linear-gradient(to right, #11998e, #38ef7d);
+      color: white;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-gradient-to-r from-green-500 to-green-300 text-white py-6 text-center">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold">E-grocer</h1>
+      <nav class="mt-4">
+        <ul class="flex justify-center space-x-6">
+          <li><a href="index.html" class="text-lg hover:text-gray-200">Home</a></li>
+          <li><a href="grocery website.html" class="text-lg hover:text-gray-200">Products</a></li>
+          <li><a href="cart.html" class="text-lg hover:text-gray-200">Cart</a></li>
+          <li><a href="contact.html" class="text-lg hover:text-gray-200">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container mx-auto px-4 py-8">
+    <section class="form-section rounded-lg p-6 mb-8">
+      <h2 class="text-2xl font-semibold text-center">Delivery & Payment Details</h2>
+      <p class="mt-2 text-center">Please provide your delivery address and payment preferences.</p>
+    </section>
+    <section class="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
+      <form id="delivery-form">
+        <div class="mb-4">
+          <label for="full-name" class="block text-gray-700 font-semibold mb-2">Full Name *</label>
+          <input type="text" id="full-name" name="full-name" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" required>
+        </div>
+        <div class="mb-4">
+          <label for="street-address" class="block text-gray-700 font-semibold mb-2">Street Address *</label>
+          <input type="text" id="street-address" name="street-address" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" required>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label for="city" class="block text-gray-700 font-semibold mb-2">City *</label>
+            <input type="text" id="city" name="city" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" required>
+          </div>
+          <div>
+            <label for="state" class="block text-gray-700 font-semibold mb-2">State *</label>
+            <input type="text" id="state" name="state" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" required>
+          </div>
+          <div>
+            <label for="zip-code" class="block text-gray-700 font-semibold mb-2">ZIP Code *</label>
+            <input type="text" id="zip-code" name="zip-code" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" required>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="phone" class="block text-gray-700 font-semibold mb-2">Phone Number *</label>
+          <input type="tel" id="phone" name="phone" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" required>
+        </div>
+        <div class="mb-4">
+          <label for="payment-mode" class="block text-gray-700 font-semibold mb-2">Payment Mode *</label>
+          <select id="payment-mode" name="payment-mode" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" required>
+            <option value="" disabled selected>Select payment mode</option>
+            <option value="Credit/Debit Card">Credit/Debit Card</option>
+            <option value="UPI">UPI</option>
+            <option value="Cash on Delivery">Cash on Delivery</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="order-notes" class="block text-gray-700 font-semibold mb-2">Order Notes (Optional)</label>
+          <textarea id="order-notes" name="order-notes" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn bg-green-500 text-white w-full py-2 rounded hover:bg-green-600">Proceed to Payment</button>
+      </form>
+    </section>
+  </div>
+  <script>
+    // Check if user is logged in
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Delivery page loaded");
+      if (localStorage.getItem("loggedIn") !== "true") {
+        console.log("Not logged in, redirecting to login.html");
+        window.location.href = "login.html";
+      }
+
+      // Handle form submission
+      const form = document.getElementById("delivery-form");
+      if (form) {
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          console.log("Delivery form submitted");
+
+          // Collect form data
+          const deliveryDetails = {
+            fullName: document.getElementById("full-name").value,
+            streetAddress: document.getElementById("street-address").value,
+            city: document.getElementById("city").value,
+            state: document.getElementById("state").value,
+            zipCode: document.getElementById("zip-code").value,
+            phone: document.getElementById("phone").value,
+            paymentMode: document.getElementById("payment-mode").value,
+            orderNotes: document.getElementById("order-notes").value,
+          };
+
+          // Validate required fields
+          if (!deliveryDetails.fullName || !deliveryDetails.streetAddress || !deliveryDetails.city || 
+              !deliveryDetails.state || !deliveryDetails.zipCode || !deliveryDetails.phone || 
+              !deliveryDetails.paymentMode) {
+            alert("Please fill in all required fields.");
+            console.log("Validation failed: Missing required fields");
+            return;
+          }
+
+          // Store delivery details in localStorage
+          localStorage.setItem("deliveryDetails", JSON.stringify(deliveryDetails));
+          console.log("Delivery details stored:", deliveryDetails);
+
+          // Redirect to payment.html
+          console.log("Redirecting to payment.html");
+          window.location.href = "payment.html";
+        });
+      } else {
+        console.error("Delivery form not found");
+      }
+    });
+  </script>
+  <script src="auth.js"></script>
+  <script src="enhancements.js"></script>
+</body>
+</html>

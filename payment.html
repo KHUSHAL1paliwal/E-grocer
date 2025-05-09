@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-grocer - Payment</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .btn {
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    body {
+      animation: fadeIn 0.5s ease-in;
+    }
+    .delivery-section {
+      background: linear-gradient(to right, #11998e, #38ef7d);
+      color: white;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-gradient-to-r from-green-500 to-green-300 text-white py-6 text-center">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold">E-grocer</h1>
+      <nav class="mt-4">
+        <ul class="flex justify-center space-x-6">
+          <li><a href="index.html" class="text-lg hover:text-gray-200">Home</a></li>
+          <li><a href="grocery website.html" class="text-lg hover:text-gray-200">Products</a></li>
+          <li><a href="cart.html" class="text-lg hover:text-gray-200">Cart</a></li>
+          <li><a href="contact.html" class="text-lg hover:text-gray-200">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container mx-auto px-4 py-8">
+    <section class="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
+      <h2 class="text-2xl font-semibold mb-4 text-center">Payment Details</h2>
+      <div id="cart-summary" class="mb-6">
+        <h3 class="text-xl font-semibold mb-2">Order Summary</h3>
+        <ul id="cart-items" class="list-none p-0"></ul>
+        <p id="cart-total" class="text-lg font-semibold mt-4">Total: ₹0.00</p>
+      </div>
+      <form id="payment-form">
+        <div id="payment-fields" class="mb-4"></div>
+        <p id="payment-message" class="text-red-500 text-center mb-4 hidden">No payment mode selected.</p>
+        <button type="submit" id="confirm-button" class="btn bg-green-500 text-white w-full py-2 rounded hover:bg-green-600">Confirm Payment</button>
+      </form>
+    </section>
+    <section class="delivery-section rounded-lg p-6 mt-8 max-w-2xl mx-auto">
+      <h2 class="text-2xl font-semibold text-center">Delivery Details</h2>
+      <div id="delivery-details" class="mt-4">
+        <p id="delivery-message" class="text-center"></p>
+        <p id="delivery-full-name" class="text-white"></p>
+        <p id="delivery-address" class="text-white"></p>
+        <p id="delivery-phone" class="text-white"></p>
+      </div>
+    </section>
+  </div>
+  <script>
+    let Items = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    function updateCartDisplay() {
+      console.log("Updating cart display", Items);
+      const cartElement = document.getElementById('cart-items');
+      const totalElement = document.getElementById('cart-total');
+      cartElement.innerHTML = '';
+      let total = 0;
+
+      Items.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center mb-2';
+        li.innerHTML = `
+          <div class="flex items-center">
+            <img src="${item.image}" alt="${item.name}" class="w-10 h-10 object-cover rounded-md mr-2">
+            <span>${item.name} - ₹${item.price.toFixed(2)} x ${item.quantity}</span>
+          </div>
+          <span>₹${(item.price * item.quantity).toFixed(2)}</span>
+        `;
+        cartElement.appendChild(li);
+        total += item.price * item.quantity;
+      });
+
+      totalElement.textContent = `Total: ₹${total.toFixed(2)}`;
+    }
+
+    function displayDeliveryDetails() {
+      console.log("Displaying delivery details");
+      const deliveryDetails = JSON.parse(localStorage.getItem("deliveryDetails")) || null;
+      const messageElement = document.getElementById("delivery-message");
+      const fullNameElement = document.getElementById("delivery-full-name");
+      const addressElement = document.getElementById("delivery-address");
+      const phoneElement = document.getElementById("delivery-phone");
+
+      if (!deliveryDetails) {
+        messageElement.textContent = "No delivery details available.";
+        console.log("No delivery details found in localStorage");
+        return;
+      }
+
+      fullNameElement.textContent = `Name: ${deliveryDetails.fullName}`;
+      addressElement.textContent = `Address: ${deliveryDetails.streetAddress}, ${deliveryDetails.city}, ${deliveryDetails.state} ${deliveryDetails.zipCode}`;
+      phoneElement.textContent = `Phone: ${deliveryDetails.phone}`;
+      messageElement.textContent = "";
+      console.log("Delivery details displayed:", deliveryDetails);
+    }
+
+    function renderPaymentFields() {
+      console.log("Rendering payment fields");
+      const deliveryDetails = JSON.parse(localStorage.getItem("deliveryDetails")) || null;
+      const paymentFields = document.getElementById("payment-fields");
+      const paymentMessage = document.getElementById("payment-message");
+      const confirmButton = document.getElementById("confirm-button");
+
+      if (!deliveryDetails || !deliveryDetails.paymentMode) {
+        paymentMessage.textContent = "No payment mode selected.";
+        paymentMessage.classList.remove("hidden");
+        paymentFields.innerHTML = "";
+        confirmButton.textContent = "Confirm Order";
+        console.log("No payment mode found");
+        return;
+      }
+
+      paymentMessage.classList.add("hidden");
+      const paymentMode = deliveryDetails.paymentMode;
+
+      if (paymentMode === "Credit/Debit Card") {
+        paymentFields.innerHTML = `
+          <div class="mb-4">
+            <label for="card-number" class="block text-gray-700 font-semibold mb-2">Card Number *</label>
+            <input type="text" id="card-number" name="card-number" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="1234 5678 9012 3456" required>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="expiry-date" class="block text-gray-700 font-semibold mb-2">Expiry Date *</label>
+              <input type="text" id="expiry-date" name="expiry-date" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="MM/YY" required>
+            </div>
+            <div>
+              <label for="cvv" class="block text-gray-700 font-semibold mb-2">CVV *</label>
+              <input type="text" id="cvv" name="cvv" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="123" required>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label for="card-holder" class="block text-gray-700 font-semibold mb-2">Card Holder Name *</label>
+            <input type="text" id="card-holder" name="card-holder" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" required>
+          </div>
+        `;
+        confirmButton.textContent = "Confirm Payment";
+      } else if (paymentMode === "UPI") {
+        paymentFields.innerHTML = `
+          <div class="mb-4">
+            <label for="upi-id" class="block text-gray-700 font-semibold mb-2">UPI ID *</label>
+            <input type="text" id="upi-id" name="upi-id" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="example@upi" required>
+          </div>
+          <div class="mb-4">
+            <label for="upi-pin" class="block text-gray-700 font-semibold mb-2">UPI PIN (Optional)</label>
+            <input type="text" id="upi-pin" name="upi-pin" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Enter UPI PIN">
+          </div>
+        `;
+        confirmButton.textContent = "Confirm Payment";
+      } else if (paymentMode === "Cash on Delivery") {
+        paymentFields.innerHTML = `
+          <p class="text-gray-700 text-center">You have selected Cash on Delivery. Please have ₹${calculateTotal().toFixed(2)} ready upon delivery.</p>
+        `;
+        confirmButton.textContent = "Confirm Order";
+      }
+      console.log(`Payment fields rendered for mode: ${paymentMode}`);
+    }
+
+    function calculateTotal() {
+      return Items.reduce((total, item) => total + item.price * item.quantity, 0);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Payment page loaded");
+      if (localStorage.getItem("loggedIn") !== "true") {
+        console.log("Not logged in, redirecting to login.html");
+        window.location.href = "login.html";
+        return;
+      }
+
+      if (Items.length === 0) {
+        alert("Your cart is empty!");
+        console.log("Cart is empty, redirecting to cart.html");
+        window.location.href = "cart.html";
+        return;
+      }
+
+      updateCartDisplay();
+      displayDeliveryDetails();
+      renderPaymentFields();
+
+      const paymentForm = document.getElementById("payment-form");
+      if (paymentForm) {
+        paymentForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          console.log("Payment form submitted");
+
+          const deliveryDetails = JSON.parse(localStorage.getItem("deliveryDetails")) || {};
+          const paymentMode = deliveryDetails.paymentMode;
+
+          if (!paymentMode) {
+            alert("No payment mode selected.");
+            console.log("Validation failed: No payment mode");
+            return;
+          }
+
+          if (paymentMode === "Credit/Debit Card") {
+            const cardNumber = document.getElementById("card-number")?.value;
+            const expiryDate = document.getElementById("expiry-date")?.value;
+            const cvv = document.getElementById("cvv")?.value;
+            const cardHolder = document.getElementById("card-holder")?.value;
+
+            if (!cardNumber || !expiryDate || !cvv || !cardHolder) {
+              alert("Please fill in all card details.");
+              console.log("Validation failed: Missing card details");
+              return;
+            }
+          } else if (paymentMode === "UPI") {
+            const upiId = document.getElementById("upi-id")?.value;
+
+            if (!upiId) {
+              alert("Please provide a valid UPI ID.");
+              console.log("Validation failed: Missing UPI ID");
+              return;
+            }
+          }
+
+          alert(`Order confirmed! ${paymentMode === "Cash on Delivery" ? "Please pay ₹" + calculateTotal().toFixed(2) + " on delivery." : "Payment successful!"} Thank you for your order.`);
+          console.log("Order confirmed, clearing cart and delivery details");
+          localStorage.removeItem("cartItems");
+          localStorage.removeItem("deliveryDetails");
+          window.location.href = "grocery website.html";
+        });
+      } else {
+        console.error("Payment form not found");
+      }
+    });
+  </script>
+  <script src="auth.js"></script>
+  <script src="enhancements.js"></script>
+</body>
+</html>

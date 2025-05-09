@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-grocer - Online Grocery Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .btn {
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    body {
+      animation: fadeIn 0.5s ease-in;
+    }
+    .profile-section {
+      background: linear-gradient(to right, #11998e, #38ef7d);
+      color: white;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-gradient-to-r from-green-500 to-green-300 text-white py-6 text-center">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold">E-grocer</h1>
+      <nav class="mt-4">
+        <ul class="flex justify-center space-x-6" id="nav-list">
+          <li><a href="index.html" class="text-lg hover:text-gray-200">Home</a></li>
+          <li><a href="grocery website.html" class="text-lg hover:text-gray-200">Products</a></li>
+          <li><a href="cart.html" class="text-lg hover:text-gray-200">Cart</a></li>
+          <li><a href="contact.html" class="text-lg hover:text-gray-200">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container mx-auto px-4 py-8">
+    <!-- Profile Section -->
+    <section class="profile-section rounded-lg p-6 mb-8 text-center">
+      <h2 class="text-2xl font-semibold">Welcome, <span id="username">User</span>!</h2>
+      <p class="mt-2">Enjoy shopping for your favorite groceries.</p>
+    </section>
+    <div class="flex flex-col md:flex-row">
+      <section id="products" class="flex-1">
+        <h2 class="text-2xl font-semibold mb-4">Available Products</h2>
+        <!-- Search Bar -->
+        <div class="mb-6 flex items-center space-x-4">
+          <input type="text" id="search-input" placeholder="Search products..." class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500">
+          <button onclick="searchProducts()" class="btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Search</button>
+        </div>
+        <!-- Category Filters -->
+        <div class="mb-6 flex space-x-4 overflow-x-auto">
+          <button onclick="filterCategory('all')" class="btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">All</button>
+          <button onclick="filterCategory('Vegetables')" class="btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Vegetables</button>
+          <button onclick="filterCategory('Drinks')" class="btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Drinks</button>
+          <button onclick="filterCategory('Dairy')" class="btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Dairy</button>
+          <button onclick="filterCategory('Fruits')" class="btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Fruits</button>
+        </div>
+        <!-- Product Sections -->
+        <!-- Vegetables Section -->
+        <div id="vegetables-section" data-category="Vegetables" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Vegetables</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Potato">
+              <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG90YXRvfGVufDB8fDB8fHww" alt="Potato" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fresh, organic potatoes, 1kg</p>
+              <h3 class="text-lg font-semibold">Potato</h3>
+              <p class="text-gray-600">₹30</p>
+              <button onclick="addToCart('Potato', 30, 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG90YXRvfGVufDB8fDB8fHww')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Tomato">
+              <img src="https://cdn.pixabay.com/photo/2022/09/05/09/50/tomatoes-7433786_1280.jpg" alt="Tomato" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Juicy organic tomatoes, 500g</p>
+              <h3 class="text-lg font-semibold">Tomato</h3>
+              <p class="text-gray-600">₹40</p>
+              <button onclick="addToCart('Tomato', 40, 'https://cdn.pixabay.com/photo/2022/09/05/09/50/tomatoes-7433786_1280.jpg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Spinach">
+              <img src="https://images.pexels.com/photos/2325843/pexels-photo-2325843.jpeg" alt="Spinach" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fresh green spinach, 200g</p>
+              <h3 class="text-lg font-semibold">Spinach</h3>
+              <p class="text-gray-600">₹25</p>
+              <button onclick="addToCart('Spinach', 25, 'https://images.pexels.com/photos/2325843/pexels-photo-2325843.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Carrot">
+              <img src="https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg" alt="Carrot" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Crisp organic carrots, 500g</p>
+              <h3 class="text-lg font-semibold">Carrot</h3>
+              <p class="text-gray-600">₹35</p>
+              <button onclick="addToCart('Carrot', 35, 'https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Onion">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW1GuJe9ACTydN078H1Y7x3pwQPmzV79be6w&s" alt="Onion" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fresh red onions, 1kg</p>
+              <h3 class="text-lg font-semibold">Onion</h3>
+              <p class="text-gray-600">₹28</p>
+              <button onclick="addToCart('Onion', 28, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW1GuJe9ACTydN078H1Y7x3pwQPmzV79be6w&s')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Broccoli">
+              <img src="https://media.istockphoto.com/id/518951178/photo/fresh-raw-green-broccoli-in-bowl.jpg?s=612x612&w=0&k=20&c=wP_y_qqs6_hFVsnkE4MCHLNOOdQ11sg5MBuOjg2AygA=" alt="Broccoli" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fresh organic broccoli, 500g</p>
+              <h3 class="text-lg font-semibold">Broccoli</h3>
+              <p class="text-gray-600">₹50</p>
+              <button onclick="addToCart('Broccoli', 50, 'https://media.istockphoto.com/id/518951178/photo/fresh-raw-green-broccoli-in-bowl.jpg?s=612x612&w=0&k=20&c=wP_y_qqs6_hFVsnkE4MCHLNOOdQ11sg5MBuOjg2AygA=')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Cauliflower">
+              <img src="https://media.istockphoto.com/id/90634594/photo/close-up-of-several-heads-of-cauliflower.jpg?s=612x612&w=0&k=20&c=hpYY7BqSUNwM-oq26wNv5pGLSPf4HijXr3zA0J3yd0E=" alt="Cauliflower" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fresh organic cauliflower, 1kg</p>
+              <h3 class="text-lg font-semibold">Cauliflower</h3>
+              <p class="text-gray-600">₹45</p>
+              <button onclick="addToCart('Cauliflower', 45, 'https://media.istockphoto.com/id/90634594/photo/close-up-of-several-heads-of-cauliflower.jpg?s=612x612&w=0&k=20&c=hpYY7BqSUNwM-oq26wNv5pGLSPf4HijXr3zA0J3yd0E=')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+        <!-- Drinks Section -->
+        <div id="drinks-section" data-category="Drinks" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Drinks</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Coca-Cola">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCrLT8WTG8TSzAO-lJd8U3pb8blZykHuJDiA&s" alt="Coca-Cola" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Refreshing cola, 500ml bottle</p>
+              <h3 class="text-lg font-semibold">Coca-Cola</h3>
+              <p class="text-gray-600">₹50</p>
+              <button onclick="addToCart('Coca-Cola', 50, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCrLT8WTG8TSzAO-lJd8U3pb8blZykHuJDiA&s')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Mango Juice">
+              <img src="https://images.pexels.com/photos/616836/pexels-photo-616836.jpeg" alt="Mango Juice" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Sweet mango juice, 1L pack</p>
+              <h3 class="text-lg font-semibold">Mango Juice</h3>
+              <p class="text-gray-600">₹60</p>
+              <button onclick="addToCart('Mango Juice', 60, 'https://images.pexels.com/photos/616836/pexels-photo-616836.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Green Tea">
+              <img src="https://images.pexels.com/photos/1417945/pexels-photo-1417945.jpeg" alt="Green Tea" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Pure green tea, 250g pack</p>
+              <h3 class="text-lg font-semibold">Green Tea</h3>
+              <p class="text-gray-600">₹80</p>
+              <button onclick="addToCart('Green Tea', 80, 'https://images.pexels.com/photos/1417945/pexels-photo-1417945.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Mineral Water">
+              <img src="https://images.pexels.com/photos/327090/pexels-photo-327090.jpeg" alt="Mineral Water" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Pure mineral water, 1L bottle</p>
+              <h3 class="text-lg font-semibold">Mineral Water</h3>
+              <p class="text-gray-600">₹20</p>
+              <button onclick="addToCart('Mineral Water', 20, 'https://images.pexels.com/photos/327090/pexels-photo-327090.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Orange Juice">
+              <img src="https://images.pexels.com/photos/2109099/pexels-photo-2109099.jpeg" alt="Orange Juice" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fresh orange juice, 1L pack</p>
+              <h3 class="text-lg font-semibold">Orange Juice</h3>
+              <p class="text-gray-600">₹70</p>
+              <button onclick="addToCart('Orange Juice', 70, 'https://images.pexels.com/photos/2109099/pexels-photo-2109099.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Lemonade">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJik678nrfNbbhdxKJi0RvEgziTgp39EY30g&s" alt="Lemonade" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Refreshing lemonade, 500ml bottle</p>
+              <h3 class="text-lg font-semibold">Lemonade</h3>
+              <p class="text-gray-600">₹40</p>
+              <button onclick="addToCart('Lemonade', 40, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJik678nrfNbbhdxKJi0RvEgziTgp39EY30g&s')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+        <!-- Dairy Section -->
+        <div id="dairy-section" data-category="Dairy" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Dairy</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Salt">
+              <img src="https://static.vecteezy.com/system/resources/thumbnails/028/266/613/small/bowl-of-sea-salt-on-color-wooden-background-closeup-generative-ai-photo.jpg" alt="Salt" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fine iodized salt, 1kg pack</p>
+              <h3 class="text-lg font-semibold">Salt</h3>
+              <p class="text-gray-600">₹40</p>
+              <button onclick="addToCart('Salt', 40, 'https://static.vecteezy.com/system/resources/thumbnails/028/266/613/small/bowl-of-sea-salt-on-color-wooden-background-closeup-generative-ai-photo.jpg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Oil">
+              <img src="https://cdn-prod.medicalnewstoday.com/content/images/articles/321/321246/olive-oil-in-a-bottle-which-may-be-used-on-the-face.jpg" alt="Oil" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Pure cooking oil, 1L bottle</p>
+              <h3 class="text-lg font-semibold">Oil</h3>
+              <p class="text-gray-600">₹160</p>
+              <button onclick="addToCart('Oil', 160, 'https://cdn-prod.medicalnewstoday.com/content/images/articles/321/321246/olive-oil-in-a-bottle-which-may-be-used-on-the-face.jpg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Milk">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBLw8pHDmM2BH0OlzTNjOQL15dqcQO8n6Ypg&s" alt="Milk" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fresh full-cream milk, 1L pack</p>
+              <h3 class="text-lg font-semibold">Milk</h3>
+              <p class="text-gray-600">₹50</p>
+              <button onclick="addToCart('Milk', 50, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBLw8pHDmM2BH0OlzTNjOQL15dqcQO8n6Ypg&s')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Cheese">
+              <img src="https://images.pexels.com/photos/821365/pexels-photo-821365.jpeg" alt="Cheese" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Creamy cheddar cheese, 200g</p>
+              <h3 class="text-lg font-semibold">Cheese</h3>
+              <p class="text-gray-600">₹120</p>
+              <button onclick="addToCart('Cheese', 120, 'https://images.pexels.com/photos/821365/pexels-photo-821365.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Butter">
+              <img src="https://media.post.rvohealth.io/wp-content/uploads/2021/04/butter-curls-1200x628-facebook.jpg" alt="Butter" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Pure unsalted butter, 200g</p>
+              <h3 class="text-lg font-semibold">Butter</h3>
+              <p class="text-gray-600">₹100</p>
+              <button onclick="addToCart('Butter', 100, 'https://media.post.rvohealth.io/wp-content/uploads/2021/04/butter-curls-1200x628-facebook.jpg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Yogurt">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPE6t7Cdq6jorkkaos-hxegoEoH4Dcl7TGYw&s" alt="Yogurt" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Creamy plain yogurt, 500g</p>
+              <h3 class="text-lg font-semibold">Yogurt</h3>
+              <p class="text-gray-600">₹60</p>
+              <button onclick="addToCart('Yogurt', 60, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPE6t7Cdq6jorkkaos-hxegoEoH4Dcl7TGYw&s')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Paneer">
+              <img src="https://www.indianhealthyrecipes.com/wp-content/uploads/2024/05/how-to-make-paneer-recipe.jpg" alt="Paneer" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Fresh paneer, 200g</p>
+              <h3 class="text-lg font-semibold">Paneer</h3>
+              <p class="text-gray-600">₹80</p>
+              <button onclick="addToCart('Paneer', 80, 'https://www.indianhealthyrecipes.com/wp-content/uploads/2024/05/how-to-make-paneer-recipe.jpg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+        <!-- Fruits Section -->
+        <div id="fruits-section" data-category="Fruits" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Fruits</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Apple">
+              <img src="https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg" alt="Apple" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Crisp red apples, 1kg</p>
+              <h3 class="text-lg font-semibold">Apple</h3>
+              <p class="text-gray-600">₹100</p>
+              <button onclick="addToCart('Apple', 100, 'https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Orange">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCrnqmz2Sk9fOUssBuaP02dtvIKaPbGSwOAA&s" alt="Orange" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Juicy sweet oranges, 1kg</p>
+              <h3 class="text-lg font-semibold">Orange</h3>
+              <p class="text-gray-600">₹80</p>
+              <button onclick="addToCart('Orange', 80, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCrnqmz2Sk9fOUssBuaP02dtvIKaPbGSwOAA&s')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Banana">
+              <img src="https://images.pexels.com/photos/2872755/pexels-photo-2872755.jpeg" alt="Banana" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Ripe yellow bananas, 1kg</p>
+              <h3 class="text-lg font-semibold">Banana</h3>
+              <p class="text-gray-600">₹40</p>
+              <button onclick="addToCart('Banana', 40, 'https://images.pexels.com/photos/2872755/pexels-photo-2872755.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Mango">
+              <img src="https://images.pexels.com/photos/918643/pexels-photo-918643.jpeg" alt="Mango" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Sweet Alphonso mangoes, 1kg</p>
+              <h3 class="text-lg font-semibold">Mango</h3>
+              <p class="text-gray-600">₹120</p>
+              <button onclick="addToCart('Mango', 120, 'https://images.pexels.com/photos/918643/pexels-photo-918643.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Grapes">
+              <img src="https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg" alt="Grapes" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Sweet green grapes, 500g</p>
+              <h3 class="text-lg font-semibold">Grapes</h3>
+              <p class="text-gray-600">₹60</p>
+              <button onclick="addToCart('Grapes', 60, 'https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+            <div class="product-card bg-white rounded-lg shadow-md p-4" data-name="Pineapple">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPbnEhpQvMHQRtXdvCLISriJ4nJcBZnetPcA&s" alt="Pineapple" class="w-full h-40 object-cover rounded-md mb-4">
+              <p class="text-sm text-gray-500 mb-2">Juicy pineapple, 1kg</p>
+              <h3 class="text-lg font-semibold">Pineapple</h3>
+              <p class="text-gray-600">₹70</p>
+              <button onclick="addToCart('Pineapple', 70, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPbnEhpQvMHQRtXdvCLISriJ4nJcBZnetPcA&s')" class="btn bg-green-500 text-white px-4 py-2 rounded mt-2 hover:bg-green-600">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <aside id="cart" class="md:w-80 bg-white rounded-lg shadow-md p-6 mt-8 md:mt-0 md:ml-6">
+        <h2 class="text-xl font-semibold mb-4">Shopping Cart</h2>
+        <ul id="cart-items" class="list-none p-0"></ul>
+        <button id="proceed-to-cart" class="btn bg-green-500 text-white w-full py-2 rounded mt-4 hover:bg-green-600">Proceed to Cart</button>
+      </aside>
+    </div>
+  </div>
+  <script>
+    let Items = JSON.parse(localStorage.getItem("cartItems")) || [];
+    let currentCategory = 'all';
+    let currentSearchQuery = '';
+
+    function addToCart(name, price, image) {
+      console.log(`Adding to cart: ${name}, ₹${price}, ${image}`);
+      const index = Items.findIndex(item => item.name === name);
+      if (index !== -1) {
+        Items[index].quantity += 1;
+      } else {
+        Items.push({ name, price, image, quantity: 1 });
+      }
+      updateCartDisplay();
+      localStorage.setItem("cartItems", JSON.stringify(Items));
+    }
+
+    function deleteFromCart(index) {
+      console.log(`Deleting item at index: ${index}`);
+      Items.splice(index, 1);
+      updateCartDisplay();
+      localStorage.setItem("cartItems", JSON.stringify(Items));
+    }
+
+    function updateQuantity(index, quantity) {
+      console.log(`Updating quantity at index: ${index} to ${quantity}`);
+      quantity = parseInt(quantity);
+      if (isNaN(quantity) || quantity < 1) quantity = 1;
+      if (quantity > 10) quantity = 10;
+      Items[index].quantity = quantity;
+      updateCartDisplay();
+      localStorage.setItem("cartItems", JSON.stringify(Items));
+    }
+
+    function updateCartDisplay() {
+      console.log("Updating cart display", Items);
+      const cartElement = document.getElementById('cart-items');
+      cartElement.innerHTML = '';
+      Items.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center mb-2';
+        li.innerHTML = `
+          <div class="flex items-center">
+            <img src="${item.image}" alt="${item.name}" class="w-10 h-10 object-cover rounded-md mr-2">
+            <span>${item.name} - ₹${item.price.toFixed(2)} x 
+              <div class="flex items-center">
+                <button onclick="updateQuantity(${index}, ${item.quantity - 1})" class="bg-red-500 text-white px-2 py-1 rounded">-</button>
+                <input type="number" value="${item.quantity}" min="1" max="10" onchange="updateQuantity(${index}, this.value)" class="w-12 text-center mx-2 border rounded">
+                <button onclick="updateQuantity(${index}, ${item.quantity + 1})" class="bg-green-500 text-white px-2 py-1 rounded">+</button>
+              </div>
+            </span>
+          </div>
+          <button onclick="deleteFromCart(${index})" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+        `;
+        cartElement.appendChild(li);
+      });
+    }
+
+    function filterCategory(category) {
+      currentCategory = category;
+      updateProductDisplay();
+    }
+
+    function searchProducts() {
+      currentSearchQuery = document.getElementById('search-input').value.trim().toLowerCase();
+      updateProductDisplay();
+    }
+
+    function updateProductDisplay() {
+      console.log(`Updating product display: category=${currentCategory}, search=${currentSearchQuery}`);
+      const sections = document.querySelectorAll('[id$="-section"]');
+      sections.forEach(section => {
+        const category = section.getAttribute('data-category');
+        const matchesCategory = currentCategory === 'all' || category === currentCategory;
+        section.style.display = matchesCategory ? 'block' : 'none';
+
+        if (matchesCategory) {
+          const products = section.querySelectorAll('.product-card');
+          products.forEach(product => {
+            const name = product.getAttribute('data-name').toLowerCase();
+            const matchesSearch = currentSearchQuery === '' || name.includes(currentSearchQuery);
+            product.style.display = matchesSearch ? 'block' : 'none';
+          });
+        }
+      });
+    }
+
+    // Initialize cart display, profile, and login check
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Products page loaded");
+      if (localStorage.getItem("loggedIn") !== "true") {
+        console.log("Not logged in, redirecting to login.html");
+        window.location.href = "login.html";
+      }
+      // Display username in profile section
+      const usernameElement = document.getElementById("username");
+      const registeredUser = localStorage.getItem("registeredUser") || "User";
+      if (usernameElement) {
+        usernameElement.textContent = registeredUser;
+      }
+      updateCartDisplay();
+      updateProductDisplay();
+      // Attach event to Proceed to Cart button
+      const cartButton = document.getElementById("proceed-to-cart");
+      if (cartButton) {
+        cartButton.onclick = () => {
+          console.log("Proceed to Cart clicked");
+          const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+          if (cartItems.length === 0) {
+            alert("Your cart is empty!");
+            console.log("Cart is empty, showing alert");
+            return;
+          }
+          console.log("Redirecting to cart.html");
+          window.location.href = "cart.html";
+        };
+      } else {
+        console.error("Proceed to Cart button not found");
+      }
+      // Add event listener for Enter key on search input
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            searchProducts();
+          }
+        });
+      }
+    });
+  </script>
+  <script src="auth.js"></script>
+  <script src="enhancements.js"></script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93d3375a9b217b93',t:'MTc0NjgxNDg4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

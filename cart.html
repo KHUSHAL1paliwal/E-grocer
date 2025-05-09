@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - E-grocer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .btn {
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .cart-item {
+      transition: background-color 0.2s ease;
+    }
+    .cart-item:hover {
+      background-color: #f9fafb;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    body {
+      animation: fadeIn 0.5s ease-in;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <header class="bg-gradient-to-r from-green-500 to-green-300 text-white py-6 text-center">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold">E-grocer</h1>
+      <nav class="mt-4">
+        <ul class="flex justify-center space-x-6">
+          <li><a href="index.html" class="text-lg hover:text-gray-200">Home</a></li>
+          <li><a href="index.html" class="text-lg hover:text-gray-200">Products</a></li>
+          <li><a href="cart.html" class="text-lg hover:text-gray-200">Cart</a></li>
+          <li><a href="#" class="text-lg hover:text-gray-200">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+    <section id="cart-items" class="flex-1 bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-semibold mb-4">Your Cart</h2>
+      <div id="cart-content" class="space-y-4"></div>
+      <p id="empty-cart" class="text-gray-500 text-center mt-4 hidden">Your cart is empty.</p>
+    </section>
+    <section id="bill" class="lg:w-96 bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-semibold mb-4">Bill Summary</h2>
+      <div class="space-y-2">
+        <p id="subtotal" class="flex justify-between text-lg">Subtotal: <span>₹0.00</span></p>
+        <p id="tax" class="flex justify-between text-lg">GST (5%): <span>₹0.00</span></p>
+        <p id="shipping" class="flex justify-between text-lg">Shipping: <span>₹0.00</span></p>
+        <hr class="my-2">
+        <p id="total" class="flex justify-between text-xl font-bold">Grand Total: <span>₹0.00</span></p>
+      </div>
+      <button id="buy-button" class="btn bg-green-500 text-white w-full py-2 rounded mt-4 hover:bg-green-600" onclick="proceedToDelivery()">Buy</button>
+    </section>
+  </div>
+  <script src="auth.js"></script>
+  <script>
+    let Items = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    function updateCartDisplay() {
+      console.log("Cart page: Updating cart display", Items);
+      const cartContent = document.getElementById("cart-content");
+      const emptyCartMessage = document.getElementById("empty-cart");
+      if (!cartContent || !emptyCartMessage) {
+        console.error("Cart content or empty message element not found");
+        return;
+      }
+      cartContent.innerHTML = "";
+      let subtotal = 0;
+
+      if (Items.length === 0) {
+        emptyCartMessage.classList.remove("hidden");
+      } else {
+        emptyCartMessage.classList.add("hidden");
+        Items.forEach((item, index) => {
+          const lineTotal = item.price * item.quantity;
+          subtotal += lineTotal;
+          const div = document.createElement("div");
+          div.className = "cart-item flex items-center p-4 border-b";
+          div.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-md mr-4">
+            <div class="flex-1">
+              <span class="font-medium">${item.name}</span><br>
+              <span>₹${item.price.toFixed(2)} x 
+                <div class="inline-flex items-center">
+                  <button onclick="updateQuantity(${index}, ${item.quantity - 1})" class="bg-red-500 text-white px-2 py-1 rounded">-</button>
+                  <input type="number" value="${item.quantity}" min="1" max="10" 
+                    onchange="updateQuantity(${index}, this.value)" class="w-12 text-center mx-2 border rounded">
+                  <button onclick="updateQuantity(${index}, ${item.quantity + 1})" class="bg-green-500 text-white px-2 py-1 rounded">+</button>
+                </div>
+                = ₹${lineTotal.toFixed(2)}
+              </span>
+            </div>
+            <button onclick="deleteFromCart(${index})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>
+          `;
+          cartContent.appendChild(div);
+        });
+      }
+
+      const tax = subtotal * 0.05;
+      const shipping = Items.length > 0 ? 50 : 0;
+      const total = subtotal + tax + shipping;
+
+      document.getElementById("subtotal").innerHTML = `Subtotal: <span>₹${subtotal.toFixed(2)}</span>`;
+      document.getElementById("tax").innerHTML = `GST (5%): <span>₹${tax.toFixed(2)}</span>`;
+      document.getElementById("shipping").innerHTML = `Shipping: <span>₹${shipping.toFixed(2)}</span>`;
+      document.getElementById("total").innerHTML = `Grand Total: <span>₹${total.toFixed(2)}</span>`;
+
+      localStorage.setItem("cartItems", JSON.stringify(Items));
+      console.log("Cart updated in localStorage:", Items);
+    }
+
+    function deleteFromCart(index) {
+      console.log(`Cart page: Deleting item at index: ${index}`);
+      Items.splice(index, 1);
+      updateCartDisplay();
+    }
+
+    function updateQuantity(index, quantity) {
+      console.log(`Cart page: Updating quantity at index: ${index} to ${quantity}`);
+      quantity = parseInt(quantity);
+      if (isNaN(quantity) || quantity < 1) quantity = 1;
+      if (quantity > 10) quantity = 10;
+      Items[index].quantity = quantity;
+      updateCartDisplay();
+    }
+
+    function proceedToDelivery() {
+  console.log("Buy button clicked");
+  const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+  if (cartItems.length === 0) {
+    alert("Your cart is empty!");
+    console.log("Cart is empty, showing alert");
+    return;
+  }
+  console.log("Redirecting to delivery.html");
+  window.location.href = "delivery.html";
+}
+
+    // Initialize cart display and login check
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Cart page loaded");
+      if (localStorage.getItem("loggedIn") !== "true") {
+        console.log("Not logged in, redirecting to login.html");
+        window.location.href = "login.html";
+      }
+      updateCartDisplay();
+    });
+  </script>
+</body>
+</html>

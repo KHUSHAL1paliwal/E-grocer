@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - E-grocer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .btn {
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    body {
+      animation: fadeIn 0.5s ease-in;
+    }
+    .contact-container {
+      background: linear-gradient(to right, #11998e, #38ef7d);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="bg-gradient-to-r from-green-500 to-green-300 text-white py-6 text-center">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold">E-grocer</h1>
+      <nav class="mt-4">
+        <ul class="flex justify-center space-x-6">
+          <li><a href="index.html" class="text-lg hover:text-gray-200">Home</a></li>
+          <li><a href="grocery website.html" class="text-lg hover:text-gray-200">Products</a></li>
+          <li><a href="cart.html" class="text-lg hover:text-gray-200">Cart</a></li>
+          <li><a href="contact.html" class="text-lg hover:text-gray-200">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="container mx-auto px-4 py-8">
+    <section class="contact-container text-white rounded-lg p-12 mb-8">
+      <h2 class="text-3xl font-bold mb-4 text-center">Contact Us</h2>
+      <p class="text-lg mb-6 text-center">We'd love to hear from you! Reach out with any questions or feedback.</p>
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Contact Form -->
+        <div class="md:w-1/2 bg-white text-gray-800 rounded-lg p-6 shadow-md">
+          <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
+          <form onsubmit="handleContactSubmit(event)">
+            <input type="text" id="name" placeholder="Your Name" required class="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500">
+            <input type="email" id="email" placeholder="Your Email" required class="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500">
+            <textarea id="message" placeholder="Your Message" required class="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-green-500" rows="5"></textarea>
+            <button type="submit" class="btn bg-green-500 text-white w-full p-3 rounded hover:bg-green-600">Send Message</button>
+          </form>
+        </div>
+        <!-- Contact Info -->
+        <div class="md:w-1/2 text-white">
+          <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+          <p class="mb-2"><strong>Email:</strong> support@e-grocer.com   paliwalkhushal27@gmail.com</p>
+          <p class="mb-2"><strong>Phone:</strong> +91 9664005126  +91 9912654423</p>
+          <p class="mb-2"><strong>Address:</strong> mahaveer colony,pratapnagar, udaipur, rajasthan, India</p>
+          <p class="mb-2"><strong>Hours:</strong> Mon-Sat, 9 AM - 6 PM</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="bg-gray-800 text-white py-6 text-center">
+    <p>&copy; 2025 E-grocer. All rights reserved.</p>
+  </footer>
+  <script src="auth.js"></script>
+  <script>
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      console.log("Contact form submitted");
+      alert("Thank you for your message! We'll get back to you soon.");
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("message").value = "";
+    }
+
+    // Login check
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Contact page loaded");
+      if (localStorage.getItem("loggedIn") !== "true") {
+        console.log("Not logged in, redirecting to login.html");
+        window.location.href = "login.html";
+      }
+    });
+  </script>

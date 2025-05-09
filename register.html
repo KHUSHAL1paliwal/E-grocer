@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Grocery Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .register-container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
+      border-radius: 5px;
+    }
+    button {
+      background: linear-gradient(to right, #11998e, #38ef7d);
+      color: white;
+      border: none;
+    }
+    button:hover {
+      background: linear-gradient(to right, #0c8976, #30c270);
+    }
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: #11998e;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>Register</h2>
+    <form onsubmit="handleRegister(event)">
+      <input type="text" id="newUsername" placeholder="New Username" required />
+      <input type="password" id="newPassword" placeholder="New Password" required />
+      <button type="submit">Register</button>
+    </form>
+    <a href="login.html">Already have an account? Login</a>
+  </div>
+
+  <script>
+    function handleRegister(e) {
+      e.preventDefault();
+      const username = document.getElementById("newUsername").value;
+      const password = document.getElementById("newPassword").value;
+
+      // Store credentials in localStorage (for demo only!)
+      localStorage.setItem("registeredUser", username);
+      localStorage.setItem("registeredPass", password);
+      alert("Registration successful!");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
